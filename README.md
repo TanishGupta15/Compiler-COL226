@@ -1,4 +1,65 @@
-# COL226 Assignment-3
+# COL226 Assignment-4
+
+
+## Objective
+
+
+The objective of this assignment is to execute the ASTs on a VMC machine by first transforming each program as
+a sequence of operations in post-fix form.
+
+
+## Implementation details
+
+The assignment directory contains the following files:
+
+1. AST.sml => This file contains the datatype AST. This is implemented using a structure (which is called ASTree). This structured is then opened in different files, as and when needed.
+2. while_ast.lex => This is the lexer file, written in ML-Lex. This is same as submitted in assignment 3. Upon running the command 
+
+    
+        $ ml-lex while_ast.lex
+  
+  while_ast.lex.sml file is generated.
+  
+3. white_ast.yacc => This is the yacc file, written in ML-YACC. The datatype definition of AST, which was previously included in this file in assignment 3 is moved to AST.sml file now. This is done to conveniently link the same datatype in other files too.
+4. while_ast.cm => This file in the SMLNJ Compilation Manager (CM). 
+5. load-while.sml => This file "joins" the different structures of lex and yacc file. Originally, this file also contained the logic of parsing Function, which has now been moved to compiler.sml for convenience.
+6. compiler.sml => This file contains the user interaction part. It implements a structure "While_AST" that implements a function called main.
+
+        main : string -> ((stackDataType FunStack.Stack) * (int Array.array) * (stackDataType FunStack.Stack)) 
+
+7. VMC.sml => This file is the crux of this assignment. This file contains various functions and implementations. Firstly, the FunStack structure of STACK signature is implemented. A symbol Table is then defined which stores the address of memory location of various variables. A function called postfix is implemented, which takes in an AST and outputs a Stack, with all commands in postfix form. During this, the symbol table is also filled using auxiliary functions.
+
+        postfix : (AST * stackDataType FunStack.Stack) -> stackDataType FunStack.Stack
+     
+Finally, this file contains the signature VMC that defines the function "rules". The structure Vmc of this signature implements the function rules.
+
+      rules : (('a FunStack.Stack) * (int Array.array) * ('a FunStack.Stack)) -> (('a FunStack.Stack) * (int Array.array) * ('a FunStack.Stack))
+      
+Some auxiliary functions have been defined next to help evaluate the whole of the program. The function helpExecute calls itself recursively unless the stack C becomes empty. The function evaluate calls this function helpExecute. The toString function helps to visualize the stacks and the memory in a better way at each instant.
+
+       toString: (('a FunStack.Stack) * (int Array.array) * ('a FunStack.Stack)) -> string
+       
+       
+The main directory also contains a folder by the name of TestCases which includes the test cases on which the assignment was tested. Some testcases intentionally contain errors to test the code exhaustively.
+
+       
+## Using the compiler
+
+The following commands need to be run to use this code:
+    
+      $ sml
+      - CM.make "while_ast.cm";
+      - While_AST.main "$(name_of_test_file)";
+      
+Firsly, we enter the REPL environment of SML by typing sml. Then we run the compilation manager file, which helps in executing all the files. After this, we can directly call the main function defined in the While_AST structure. 
+
+To run the evaluate function for an AST, use
+
+    - Vmc.evaluate(filename);
+    
+    
+    
+
 
 
 ## Context-free Grammar
@@ -137,17 +198,12 @@ Number: NUMERAL (intnode(NUM, NUMERAL, empty))
 
 ## Other Design Decisions
 
-  For this assignment, I have built an AST for a given program. 
-  
-  1. I have implemented a symbol Table and made sure to check types. If there is a datatype mismatch during command sequences, the final AST returned is empty. (Type checking has been implemented as discussed with Prof Arun Kumar in the lecture)
-  2. I have included a makefile which contains the commands that need to be run on the terminal to compile lex and yacc files. Before running the parser, make sure to run the make command.
-  3. To run the parser (after running the make command!), just type (parseFile "$(name_of_file.txt)" ;) in the repl environment, where $(name_of_file.txt) is replaced with the filename. SO, an example of this will look like: parseFile "test1.txt";
-  4. I have tested the function on all the given test files. Some of the files intentionally contain errors to test parsing exhaustively.
-
+1. To conveniently use the same datatypes in YACC file as well as in the VMC.sml file, I had to make significant changes in the YACC file. So, the YACC file submitted now is somewhat different than originally submittes (Mainly in the topmost section, though).
+2. Some "rules" were modified and others were added to implement the structure correctly. As an example, there was no rule to deal with unary operators, which has to be then added.
 
 ## Other Implementation Decisions
 
-  The final output is in the form of nodes (something similar to the Integer Binary Tree Built in Assignment 2).
+  The final output is a 3-Tuple. Presently, I am not commenting the code which helps in visualizing the stacks and memory at every instant. This can be easily commented.
 
 
 ## Acknowledgements
