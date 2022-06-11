@@ -1,0 +1,19 @@
+program test12 :: 
+    var c : int;
+    {
+        c := 0;
+        while (c < 10) do
+        {
+            if ( c % 2 = 0) then
+            {
+                read c;
+            }
+            else
+            {
+                write c % 2;
+            }
+            endif;
+            c := c + 1;
+        }
+        endwh;
+    }

@@ -1,0 +1,7 @@
+program test7 :: 
+    var a : int;
+    var b : bool;
+    var c : int;
+    {
+        c := a + b;
+    }

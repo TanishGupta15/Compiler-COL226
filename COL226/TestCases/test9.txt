@@ -1,0 +1,5 @@
+program test9 :: 
+    var c : bool;
+    {
+        c := 1 + 2 < 2 + 3;
+    }

@@ -1,0 +1,11 @@
+program test2 ::
+    var x, y : int;
+    var z : bool;
+    var t, w : bool;
+    {
+        if 1 < 2 then x := 3; y := 4; z := tt; t := 4; w := 5;
+        else x := 1; y := 2; z := ff; t := 2; w := 3;
+        endif;
+
+        x := 3;
+    }

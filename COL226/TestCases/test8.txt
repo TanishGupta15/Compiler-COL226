@@ -1,0 +1,5 @@
+program test8 :: 
+    var c : bool;
+    {
+        c := tt && ff;
+    }

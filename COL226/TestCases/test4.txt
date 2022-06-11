@@ -1,0 +1,6 @@
+program test4 ::
+    var x,y : int;
+    var z,t : int;
+    {
+        x := 3*(~3);
+    }

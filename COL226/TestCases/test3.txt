@@ -1,0 +1,6 @@
+program test3 :: 
+    var x,y : int;
+    {
+        x := 5 + 5*5;
+        y := 5*5 + 5;
+    }

@@ -1,0 +1,5 @@
+program test10 :: 
+    var c : bool;
+    {
+        c := (tt < ff) <= (ff < ff) ;
+    }

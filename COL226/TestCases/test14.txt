@@ -1,0 +1,10 @@
+program test14 ::
+    var x,y : int;
+    var z,t : bool;
+    {
+        x := 3*(~~3);
+        y := 3 % 2;
+        z := !ff && !!tt;
+        write x + y;
+        read t;
+    }

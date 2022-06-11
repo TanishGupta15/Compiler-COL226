@@ -1,0 +1,1470 @@
+
+state 0:
+
+	program : . PROGRAM Variable DEFINE BLOCK 
+
+	PROGRAM	shift 1
+
+	program	goto 88
+
+	.	error
+
+
+state 1:
+
+	program : PROGRAM . Variable DEFINE BLOCK 
+
+	IDENTIFIER	shift 3
+
+	Variable	goto 2
+
+	.	error
+
+
+state 2:
+
+	program : PROGRAM Variable . DEFINE BLOCK 
+
+	DEFINE	shift 4
+
+
+	.	error
+
+
+state 3:
+
+	Variable : IDENTIFIER .  (reduce by rule 36)
+
+
+
+	.	reduce by rule 36
+
+
+state 4:
+
+	program : PROGRAM Variable DEFINE . BLOCK 
+
+	VAR	shift 8
+
+	BLOCK	goto 7
+	DeclarationSeq	goto 6
+	Declaration	goto 5
+
+	.	reduce by rule 2
+
+
+state 5:
+
+	DeclarationSeq : Declaration . DeclarationSeq 
+
+	VAR	shift 8
+
+	DeclarationSeq	goto 9
+	Declaration	goto 5
+
+	.	reduce by rule 2
+
+
+state 6:
+
+	BLOCK : DeclarationSeq . LBRACE CommandSeq RBRACE 
+
+	LBRACE	shift 10
+
+
+	.	error
+
+
+state 7:
+
+	program : PROGRAM Variable DEFINE BLOCK .  (reduce by rule 0)
+
+
+
+	.	reduce by rule 0
+
+
+state 8:
+
+	Declaration : VAR . VariableList ASSIGNB dt TERMINATOR 
+
+	IDENTIFIER	shift 3
+
+	VariableList	goto 12
+	Variable	goto 11
+
+	.	error
+
+
+state 9:
+
+	DeclarationSeq : Declaration DeclarationSeq .  (reduce by rule 3)
+
+
+
+	.	reduce by rule 3
+
+
+state 10:
+
+	BLOCK : DeclarationSeq LBRACE . CommandSeq RBRACE 
+
+	Read	shift 19
+	Write	shift 18
+	IF	shift 17
+	WHILE	shift 16
+	IDENTIFIER	shift 3
+
+	CommandSeq	goto 15
+	command	goto 14
+	Variable	goto 13
+
+	.	reduce by rule 10
+
+
+state 11:
+
+	VariableList : Variable . COMMA VariableList 
+	VariableList : Variable .  (reduce by rule 8)
+
+	COMMA	shift 20
+
+
+	.	reduce by rule 8
+
+
+state 12:
+
+	Declaration : VAR VariableList . ASSIGNB dt TERMINATOR 
+
+	ASSIGNB	shift 21
+
+
+	.	error
+
+
+state 13:
+
+	command : Variable . ASSIGNA Expression 
+
+	ASSIGNA	shift 22
+
+
+	.	error
+
+
+state 14:
+
+	CommandSeq : command . TERMINATOR CommandSeq 
+
+	TERMINATOR	shift 23
+
+
+	.	error
+
+
+state 15:
+
+	BLOCK : DeclarationSeq LBRACE CommandSeq . RBRACE 
+
+	RBRACE	shift 24
+
+
+	.	error
+
+
+state 16:
+
+	command : WHILE . Expression DO LBRACE CommandSeq RBRACE ENDWH 
+
+	LPAREN	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	Negation	shift 29
+	IDENTIFIER	shift 3
+	NUMERAL	shift 28
+
+	Expression	goto 27
+	Variable	goto 26
+	Number	goto 25
+
+	.	error
+
+
+state 17:
+
+	command : IF . Expression THEN LBRACE CommandSeq RBRACE ELSE LBRACE CommandSeq RBRACE ENDIF 
+
+	LPAREN	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	Negation	shift 29
+	IDENTIFIER	shift 3
+	NUMERAL	shift 28
+
+	Expression	goto 34
+	Variable	goto 26
+	Number	goto 25
+
+	.	error
+
+
+state 18:
+
+	command : Write . Expression 
+
+	LPAREN	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	Negation	shift 29
+	IDENTIFIER	shift 3
+	NUMERAL	shift 28
+
+	Expression	goto 35
+	Variable	goto 26
+	Number	goto 25
+
+	.	error
+
+
+state 19:
+
+	command : Read . Variable 
+
+	IDENTIFIER	shift 3
+
+	Variable	goto 36
+
+	.	error
+
+
+state 20:
+
+	VariableList : Variable COMMA . VariableList 
+
+	IDENTIFIER	shift 3
+
+	VariableList	goto 37
+	Variable	goto 11
+
+	.	error
+
+
+state 21:
+
+	Declaration : VAR VariableList ASSIGNB . dt TERMINATOR 
+
+	INT	shift 40
+	BOOL	shift 39
+
+	dt	goto 38
+
+	.	error
+
+
+state 22:
+
+	command : Variable ASSIGNA . Expression 
+
+	LPAREN	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	Negation	shift 29
+	IDENTIFIER	shift 3
+	NUMERAL	shift 28
+
+	Expression	goto 41
+	Variable	goto 26
+	Number	goto 25
+
+	.	error
+
+
+state 23:
+
+	CommandSeq : command TERMINATOR . CommandSeq 
+
+	Read	shift 19
+	Write	shift 18
+	IF	shift 17
+	WHILE	shift 16
+	IDENTIFIER	shift 3
+
+	CommandSeq	goto 42
+	command	goto 14
+	Variable	goto 13
+
+	.	reduce by rule 10
+
+
+state 24:
+
+	BLOCK : DeclarationSeq LBRACE CommandSeq RBRACE .  (reduce by rule 1)
+
+
+
+	.	reduce by rule 1
+
+
+state 25:
+
+	Expression : Number .  (reduce by rule 18)
+
+
+
+	.	reduce by rule 18
+
+
+state 26:
+
+	Expression : Variable .  (reduce by rule 19)
+
+
+
+	.	reduce by rule 19
+
+
+state 27:
+
+	command : WHILE Expression . DO LBRACE CommandSeq RBRACE ENDWH 
+	Expression : Expression . GT Expression 
+	Expression : Expression . LT Expression 
+	Expression : Expression . LEQ Expression 
+	Expression : Expression . EQ Expression 
+	Expression : Expression . GEQ Expression 
+	Expression : Expression . NEQ Expression 
+	Expression : Expression . AND Expression 
+	Expression : Expression . OR Expression 
+	Expression : Expression . PLUS Expression 
+	Expression : Expression . MINUS Expression 
+	Expression : Expression . MULT Expression 
+	Expression : Expression . DIV Expression 
+	Expression : Expression . MOD Expression 
+
+	DO	shift 56
+	OR	shift 55
+	AND	shift 54
+	LT	shift 53
+	GT	shift 52
+	GEQ	shift 51
+	EQ	shift 50
+	LEQ	shift 49
+	NEQ	shift 48
+	PLUS	shift 47
+	MINUS	shift 46
+	MULT	shift 45
+	DIV	shift 44
+	MOD	shift 43
+
+
+	.	error
+
+
+state 28:
+
+	Number : NUMERAL .  (reduce by rule 37)
+
+
+
+	.	reduce by rule 37
+
+
+state 29:
+
+	Expression : Negation . Expression 
+
+	LPAREN	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	Negation	shift 29
+	IDENTIFIER	shift 3
+	NUMERAL	shift 28
+
+	Expression	goto 57
+	Variable	goto 26
+	Number	goto 25
+
+	.	error
+
+
+state 30:
+
+	Expression : NOT . Expression 
+
+	LPAREN	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	Negation	shift 29
+	IDENTIFIER	shift 3
+	NUMERAL	shift 28
+
+	Expression	goto 58
+	Variable	goto 26
+	Number	goto 25
+
+	.	error
+
+
+state 31:
+
+	Expression : FALSE .  (reduce by rule 17)
+
+
+
+	.	reduce by rule 17
+
+
+state 32:
+
+	Expression : TRUE .  (reduce by rule 16)
+
+
+
+	.	reduce by rule 16
+
+
+state 33:
+
+	Expression : LPAREN . Expression RPAREN 
+
+	LPAREN	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	Negation	shift 29
+	IDENTIFIER	shift 3
+	NUMERAL	shift 28
+
+	Expression	goto 59
+	Variable	goto 26
+	Number	goto 25
+
+	.	error
+
+
+state 34:
+
+	command : IF Expression . THEN LBRACE CommandSeq RBRACE ELSE LBRACE CommandSeq RBRACE ENDIF 
+	Expression : Expression . GT Expression 
+	Expression : Expression . LT Expression 
+	Expression : Expression . LEQ Expression 
+	Expression : Expression . EQ Expression 
+	Expression : Expression . GEQ Expression 
+	Expression : Expression . NEQ Expression 
+	Expression : Expression . AND Expression 
+	Expression : Expression . OR Expression 
+	Expression : Expression . PLUS Expression 
+	Expression : Expression . MINUS Expression 
+	Expression : Expression . MULT Expression 
+	Expression : Expression . DIV Expression 
+	Expression : Expression . MOD Expression 
+
+	THEN	shift 60
+	OR	shift 55
+	AND	shift 54
+	LT	shift 53
+	GT	shift 52
+	GEQ	shift 51
+	EQ	shift 50
+	LEQ	shift 49
+	NEQ	shift 48
+	PLUS	shift 47
+	MINUS	shift 46
+	MULT	shift 45
+	DIV	shift 44
+	MOD	shift 43
+
+
+	.	error
+
+
+state 35:
+
+	command : Write Expression .  (reduce by rule 13)
+	Expression : Expression . GT Expression 
+	Expression : Expression . LT Expression 
+	Expression : Expression . LEQ Expression 
+	Expression : Expression . EQ Expression 
+	Expression : Expression . GEQ Expression 
+	Expression : Expression . NEQ Expression 
+	Expression : Expression . AND Expression 
+	Expression : Expression . OR Expression 
+	Expression : Expression . PLUS Expression 
+	Expression : Expression . MINUS Expression 
+	Expression : Expression . MULT Expression 
+	Expression : Expression . DIV Expression 
+	Expression : Expression . MOD Expression 
+
+	OR	shift 55
+	AND	shift 54
+	LT	shift 53
+	GT	shift 52
+	GEQ	shift 51
+	EQ	shift 50
+	LEQ	shift 49
+	NEQ	shift 48
+	PLUS	shift 47
+	MINUS	shift 46
+	MULT	shift 45
+	DIV	shift 44
+	MOD	shift 43
+
+
+	.	reduce by rule 13
+
+
+state 36:
+
+	command : Read Variable .  (reduce by rule 12)
+
+
+
+	.	reduce by rule 12
+
+
+state 37:
+
+	VariableList : Variable COMMA VariableList .  (reduce by rule 7)
+
+
+
+	.	reduce by rule 7
+
+
+state 38:
+
+	Declaration : VAR VariableList ASSIGNB dt . TERMINATOR 
+
+	TERMINATOR	shift 61
+
+
+	.	error
+
+
+state 39:
+
+	dt : BOOL .  (reduce by rule 6)
+
+
+
+	.	reduce by rule 6
+
+
+state 40:
+
+	dt : INT .  (reduce by rule 5)
+
+
+
+	.	reduce by rule 5
+
+
+state 41:
+
+	command : Variable ASSIGNA Expression .  (reduce by rule 11)
+	Expression : Expression . GT Expression 
+	Expression : Expression . LT Expression 
+	Expression : Expression . LEQ Expression 
+	Expression : Expression . EQ Expression 
+	Expression : Expression . GEQ Expression 
+	Expression : Expression . NEQ Expression 
+	Expression : Expression . AND Expression 
+	Expression : Expression . OR Expression 
+	Expression : Expression . PLUS Expression 
+	Expression : Expression . MINUS Expression 
+	Expression : Expression . MULT Expression 
+	Expression : Expression . DIV Expression 
+	Expression : Expression . MOD Expression 
+
+	OR	shift 55
+	AND	shift 54
+	LT	shift 53
+	GT	shift 52
+	GEQ	shift 51
+	EQ	shift 50
+	LEQ	shift 49
+	NEQ	shift 48
+	PLUS	shift 47
+	MINUS	shift 46
+	MULT	shift 45
+	DIV	shift 44
+	MOD	shift 43
+
+
+	.	reduce by rule 11
+
+
+state 42:
+
+	CommandSeq : command TERMINATOR CommandSeq .  (reduce by rule 9)
+
+
+
+	.	reduce by rule 9
+
+
+state 43:
+
+	Expression : Expression MOD . Expression 
+
+	LPAREN	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	Negation	shift 29
+	IDENTIFIER	shift 3
+	NUMERAL	shift 28
+
+	Expression	goto 62
+	Variable	goto 26
+	Number	goto 25
+
+	.	error
+
+
+state 44:
+
+	Expression : Expression DIV . Expression 
+
+	LPAREN	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	Negation	shift 29
+	IDENTIFIER	shift 3
+	NUMERAL	shift 28
+
+	Expression	goto 63
+	Variable	goto 26
+	Number	goto 25
+
+	.	error
+
+
+state 45:
+
+	Expression : Expression MULT . Expression 
+
+	LPAREN	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	Negation	shift 29
+	IDENTIFIER	shift 3
+	NUMERAL	shift 28
+
+	Expression	goto 64
+	Variable	goto 26
+	Number	goto 25
+
+	.	error
+
+
+state 46:
+
+	Expression : Expression MINUS . Expression 
+
+	LPAREN	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	Negation	shift 29
+	IDENTIFIER	shift 3
+	NUMERAL	shift 28
+
+	Expression	goto 65
+	Variable	goto 26
+	Number	goto 25
+
+	.	error
+
+
+state 47:
+
+	Expression : Expression PLUS . Expression 
+
+	LPAREN	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	Negation	shift 29
+	IDENTIFIER	shift 3
+	NUMERAL	shift 28
+
+	Expression	goto 66
+	Variable	goto 26
+	Number	goto 25
+
+	.	error
+
+
+state 48:
+
+	Expression : Expression NEQ . Expression 
+
+	LPAREN	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	Negation	shift 29
+	IDENTIFIER	shift 3
+	NUMERAL	shift 28
+
+	Expression	goto 67
+	Variable	goto 26
+	Number	goto 25
+
+	.	error
+
+
+state 49:
+
+	Expression : Expression LEQ . Expression 
+
+	LPAREN	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	Negation	shift 29
+	IDENTIFIER	shift 3
+	NUMERAL	shift 28
+
+	Expression	goto 68
+	Variable	goto 26
+	Number	goto 25
+
+	.	error
+
+
+state 50:
+
+	Expression : Expression EQ . Expression 
+
+	LPAREN	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	Negation	shift 29
+	IDENTIFIER	shift 3
+	NUMERAL	shift 28
+
+	Expression	goto 69
+	Variable	goto 26
+	Number	goto 25
+
+	.	error
+
+
+state 51:
+
+	Expression : Expression GEQ . Expression 
+
+	LPAREN	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	Negation	shift 29
+	IDENTIFIER	shift 3
+	NUMERAL	shift 28
+
+	Expression	goto 70
+	Variable	goto 26
+	Number	goto 25
+
+	.	error
+
+
+state 52:
+
+	Expression : Expression GT . Expression 
+
+	LPAREN	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	Negation	shift 29
+	IDENTIFIER	shift 3
+	NUMERAL	shift 28
+
+	Expression	goto 71
+	Variable	goto 26
+	Number	goto 25
+
+	.	error
+
+
+state 53:
+
+	Expression : Expression LT . Expression 
+
+	LPAREN	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	Negation	shift 29
+	IDENTIFIER	shift 3
+	NUMERAL	shift 28
+
+	Expression	goto 72
+	Variable	goto 26
+	Number	goto 25
+
+	.	error
+
+
+state 54:
+
+	Expression : Expression AND . Expression 
+
+	LPAREN	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	Negation	shift 29
+	IDENTIFIER	shift 3
+	NUMERAL	shift 28
+
+	Expression	goto 73
+	Variable	goto 26
+	Number	goto 25
+
+	.	error
+
+
+state 55:
+
+	Expression : Expression OR . Expression 
+
+	LPAREN	shift 33
+	TRUE	shift 32
+	FALSE	shift 31
+	NOT	shift 30
+	Negation	shift 29
+	IDENTIFIER	shift 3
+	NUMERAL	shift 28
+
+	Expression	goto 74
+	Variable	goto 26
+	Number	goto 25
+
+	.	error
+
+
+state 56:
+
+	command : WHILE Expression DO . LBRACE CommandSeq RBRACE ENDWH 
+
+	LBRACE	shift 75
+
+
+	.	error
+
+
+state 57:
+
+	Expression : Expression . GT Expression 
+	Expression : Expression . LT Expression 
+	Expression : Expression . LEQ Expression 
+	Expression : Expression . EQ Expression 
+	Expression : Expression . GEQ Expression 
+	Expression : Expression . NEQ Expression 
+	Expression : Expression . AND Expression 
+	Expression : Expression . OR Expression 
+	Expression : Negation Expression .  (reduce by rule 30)
+	Expression : Expression . PLUS Expression 
+	Expression : Expression . MINUS Expression 
+	Expression : Expression . MULT Expression 
+	Expression : Expression . DIV Expression 
+	Expression : Expression . MOD Expression 
+
+
+
+	.	reduce by rule 30
+
+
+state 58:
+
+	Expression : Expression . GT Expression 
+	Expression : Expression . LT Expression 
+	Expression : Expression . LEQ Expression 
+	Expression : Expression . EQ Expression 
+	Expression : Expression . GEQ Expression 
+	Expression : Expression . NEQ Expression 
+	Expression : Expression . AND Expression 
+	Expression : Expression . OR Expression 
+	Expression : NOT Expression .  (reduce by rule 29)
+	Expression : Expression . PLUS Expression 
+	Expression : Expression . MINUS Expression 
+	Expression : Expression . MULT Expression 
+	Expression : Expression . DIV Expression 
+	Expression : Expression . MOD Expression 
+
+
+
+	.	reduce by rule 29
+
+
+state 59:
+
+	Expression : Expression . GT Expression 
+	Expression : Expression . LT Expression 
+	Expression : Expression . LEQ Expression 
+	Expression : Expression . EQ Expression 
+	Expression : Expression . GEQ Expression 
+	Expression : Expression . NEQ Expression 
+	Expression : Expression . AND Expression 
+	Expression : Expression . OR Expression 
+	Expression : LPAREN Expression . RPAREN 
+	Expression : Expression . PLUS Expression 
+	Expression : Expression . MINUS Expression 
+	Expression : Expression . MULT Expression 
+	Expression : Expression . DIV Expression 
+	Expression : Expression . MOD Expression 
+
+	RPAREN	shift 76
+	OR	shift 55
+	AND	shift 54
+	LT	shift 53
+	GT	shift 52
+	GEQ	shift 51
+	EQ	shift 50
+	LEQ	shift 49
+	NEQ	shift 48
+	PLUS	shift 47
+	MINUS	shift 46
+	MULT	shift 45
+	DIV	shift 44
+	MOD	shift 43
+
+
+	.	error
+
+
+state 60:
+
+	command : IF Expression THEN . LBRACE CommandSeq RBRACE ELSE LBRACE CommandSeq RBRACE ENDIF 
+
+	LBRACE	shift 77
+
+
+	.	error
+
+
+state 61:
+
+	Declaration : VAR VariableList ASSIGNB dt TERMINATOR .  (reduce by rule 4)
+
+
+
+	.	reduce by rule 4
+
+
+state 62:
+
+	Expression : Expression . GT Expression 
+	Expression : Expression . LT Expression 
+	Expression : Expression . LEQ Expression 
+	Expression : Expression . EQ Expression 
+	Expression : Expression . GEQ Expression 
+	Expression : Expression . NEQ Expression 
+	Expression : Expression . AND Expression 
+	Expression : Expression . OR Expression 
+	Expression : Expression . PLUS Expression 
+	Expression : Expression . MINUS Expression 
+	Expression : Expression . MULT Expression 
+	Expression : Expression . DIV Expression 
+	Expression : Expression . MOD Expression 
+	Expression : Expression MOD Expression .  (reduce by rule 35)
+
+
+
+	.	reduce by rule 35
+
+
+state 63:
+
+	Expression : Expression . GT Expression 
+	Expression : Expression . LT Expression 
+	Expression : Expression . LEQ Expression 
+	Expression : Expression . EQ Expression 
+	Expression : Expression . GEQ Expression 
+	Expression : Expression . NEQ Expression 
+	Expression : Expression . AND Expression 
+	Expression : Expression . OR Expression 
+	Expression : Expression . PLUS Expression 
+	Expression : Expression . MINUS Expression 
+	Expression : Expression . MULT Expression 
+	Expression : Expression . DIV Expression 
+	Expression : Expression DIV Expression .  (reduce by rule 34)
+	Expression : Expression . MOD Expression 
+
+
+
+	.	reduce by rule 34
+
+
+state 64:
+
+	Expression : Expression . GT Expression 
+	Expression : Expression . LT Expression 
+	Expression : Expression . LEQ Expression 
+	Expression : Expression . EQ Expression 
+	Expression : Expression . GEQ Expression 
+	Expression : Expression . NEQ Expression 
+	Expression : Expression . AND Expression 
+	Expression : Expression . OR Expression 
+	Expression : Expression . PLUS Expression 
+	Expression : Expression . MINUS Expression 
+	Expression : Expression . MULT Expression 
+	Expression : Expression MULT Expression .  (reduce by rule 33)
+	Expression : Expression . DIV Expression 
+	Expression : Expression . MOD Expression 
+
+
+
+	.	reduce by rule 33
+
+
+state 65:
+
+	Expression : Expression . GT Expression 
+	Expression : Expression . LT Expression 
+	Expression : Expression . LEQ Expression 
+	Expression : Expression . EQ Expression 
+	Expression : Expression . GEQ Expression 
+	Expression : Expression . NEQ Expression 
+	Expression : Expression . AND Expression 
+	Expression : Expression . OR Expression 
+	Expression : Expression . PLUS Expression 
+	Expression : Expression . MINUS Expression 
+	Expression : Expression MINUS Expression .  (reduce by rule 32)
+	Expression : Expression . MULT Expression 
+	Expression : Expression . DIV Expression 
+	Expression : Expression . MOD Expression 
+
+	MULT	shift 45
+	DIV	shift 44
+	MOD	shift 43
+
+
+	.	reduce by rule 32
+
+
+state 66:
+
+	Expression : Expression . GT Expression 
+	Expression : Expression . LT Expression 
+	Expression : Expression . LEQ Expression 
+	Expression : Expression . EQ Expression 
+	Expression : Expression . GEQ Expression 
+	Expression : Expression . NEQ Expression 
+	Expression : Expression . AND Expression 
+	Expression : Expression . OR Expression 
+	Expression : Expression . PLUS Expression 
+	Expression : Expression PLUS Expression .  (reduce by rule 31)
+	Expression : Expression . MINUS Expression 
+	Expression : Expression . MULT Expression 
+	Expression : Expression . DIV Expression 
+	Expression : Expression . MOD Expression 
+
+	MULT	shift 45
+	DIV	shift 44
+	MOD	shift 43
+
+
+	.	reduce by rule 31
+
+
+state 67:
+
+	Expression : Expression . GT Expression 
+	Expression : Expression . LT Expression 
+	Expression : Expression . LEQ Expression 
+	Expression : Expression . EQ Expression 
+	Expression : Expression . GEQ Expression 
+	Expression : Expression . NEQ Expression 
+	Expression : Expression NEQ Expression .  (reduce by rule 25)
+	Expression : Expression . AND Expression 
+	Expression : Expression . OR Expression 
+	Expression : Expression . PLUS Expression 
+	Expression : Expression . MINUS Expression 
+	Expression : Expression . MULT Expression 
+	Expression : Expression . DIV Expression 
+	Expression : Expression . MOD Expression 
+
+	PLUS	shift 47
+	MINUS	shift 46
+	MULT	shift 45
+	DIV	shift 44
+	MOD	shift 43
+
+
+	.	reduce by rule 25
+
+
+state 68:
+
+	Expression : Expression . GT Expression 
+	Expression : Expression . LT Expression 
+	Expression : Expression . LEQ Expression 
+	Expression : Expression LEQ Expression .  (reduce by rule 22)
+	Expression : Expression . EQ Expression 
+	Expression : Expression . GEQ Expression 
+	Expression : Expression . NEQ Expression 
+	Expression : Expression . AND Expression 
+	Expression : Expression . OR Expression 
+	Expression : Expression . PLUS Expression 
+	Expression : Expression . MINUS Expression 
+	Expression : Expression . MULT Expression 
+	Expression : Expression . DIV Expression 
+	Expression : Expression . MOD Expression 
+
+	PLUS	shift 47
+	MINUS	shift 46
+	MULT	shift 45
+	DIV	shift 44
+	MOD	shift 43
+
+
+	.	reduce by rule 22
+
+
+state 69:
+
+	Expression : Expression . GT Expression 
+	Expression : Expression . LT Expression 
+	Expression : Expression . LEQ Expression 
+	Expression : Expression . EQ Expression 
+	Expression : Expression EQ Expression .  (reduce by rule 23)
+	Expression : Expression . GEQ Expression 
+	Expression : Expression . NEQ Expression 
+	Expression : Expression . AND Expression 
+	Expression : Expression . OR Expression 
+	Expression : Expression . PLUS Expression 
+	Expression : Expression . MINUS Expression 
+	Expression : Expression . MULT Expression 
+	Expression : Expression . DIV Expression 
+	Expression : Expression . MOD Expression 
+
+	PLUS	shift 47
+	MINUS	shift 46
+	MULT	shift 45
+	DIV	shift 44
+	MOD	shift 43
+
+
+	.	reduce by rule 23
+
+
+state 70:
+
+	Expression : Expression . GT Expression 
+	Expression : Expression . LT Expression 
+	Expression : Expression . LEQ Expression 
+	Expression : Expression . EQ Expression 
+	Expression : Expression . GEQ Expression 
+	Expression : Expression GEQ Expression .  (reduce by rule 24)
+	Expression : Expression . NEQ Expression 
+	Expression : Expression . AND Expression 
+	Expression : Expression . OR Expression 
+	Expression : Expression . PLUS Expression 
+	Expression : Expression . MINUS Expression 
+	Expression : Expression . MULT Expression 
+	Expression : Expression . DIV Expression 
+	Expression : Expression . MOD Expression 
+
+	PLUS	shift 47
+	MINUS	shift 46
+	MULT	shift 45
+	DIV	shift 44
+	MOD	shift 43
+
+
+	.	reduce by rule 24
+
+
+state 71:
+
+	Expression : Expression . GT Expression 
+	Expression : Expression GT Expression .  (reduce by rule 20)
+	Expression : Expression . LT Expression 
+	Expression : Expression . LEQ Expression 
+	Expression : Expression . EQ Expression 
+	Expression : Expression . GEQ Expression 
+	Expression : Expression . NEQ Expression 
+	Expression : Expression . AND Expression 
+	Expression : Expression . OR Expression 
+	Expression : Expression . PLUS Expression 
+	Expression : Expression . MINUS Expression 
+	Expression : Expression . MULT Expression 
+	Expression : Expression . DIV Expression 
+	Expression : Expression . MOD Expression 
+
+	PLUS	shift 47
+	MINUS	shift 46
+	MULT	shift 45
+	DIV	shift 44
+	MOD	shift 43
+
+
+	.	reduce by rule 20
+
+
+state 72:
+
+	Expression : Expression . GT Expression 
+	Expression : Expression . LT Expression 
+	Expression : Expression LT Expression .  (reduce by rule 21)
+	Expression : Expression . LEQ Expression 
+	Expression : Expression . EQ Expression 
+	Expression : Expression . GEQ Expression 
+	Expression : Expression . NEQ Expression 
+	Expression : Expression . AND Expression 
+	Expression : Expression . OR Expression 
+	Expression : Expression . PLUS Expression 
+	Expression : Expression . MINUS Expression 
+	Expression : Expression . MULT Expression 
+	Expression : Expression . DIV Expression 
+	Expression : Expression . MOD Expression 
+
+	PLUS	shift 47
+	MINUS	shift 46
+	MULT	shift 45
+	DIV	shift 44
+	MOD	shift 43
+
+
+	.	reduce by rule 21
+
+
+state 73:
+
+	Expression : Expression . GT Expression 
+	Expression : Expression . LT Expression 
+	Expression : Expression . LEQ Expression 
+	Expression : Expression . EQ Expression 
+	Expression : Expression . GEQ Expression 
+	Expression : Expression . NEQ Expression 
+	Expression : Expression . AND Expression 
+	Expression : Expression AND Expression .  (reduce by rule 26)
+	Expression : Expression . OR Expression 
+	Expression : Expression . PLUS Expression 
+	Expression : Expression . MINUS Expression 
+	Expression : Expression . MULT Expression 
+	Expression : Expression . DIV Expression 
+	Expression : Expression . MOD Expression 
+
+	LT	shift 53
+	GT	shift 52
+	GEQ	shift 51
+	EQ	shift 50
+	LEQ	shift 49
+	NEQ	shift 48
+	PLUS	shift 47
+	MINUS	shift 46
+	MULT	shift 45
+	DIV	shift 44
+	MOD	shift 43
+
+
+	.	reduce by rule 26
+
+
+state 74:
+
+	Expression : Expression . GT Expression 
+	Expression : Expression . LT Expression 
+	Expression : Expression . LEQ Expression 
+	Expression : Expression . EQ Expression 
+	Expression : Expression . GEQ Expression 
+	Expression : Expression . NEQ Expression 
+	Expression : Expression . AND Expression 
+	Expression : Expression . OR Expression 
+	Expression : Expression OR Expression .  (reduce by rule 27)
+	Expression : Expression . PLUS Expression 
+	Expression : Expression . MINUS Expression 
+	Expression : Expression . MULT Expression 
+	Expression : Expression . DIV Expression 
+	Expression : Expression . MOD Expression 
+
+	AND	shift 54
+	LT	shift 53
+	GT	shift 52
+	GEQ	shift 51
+	EQ	shift 50
+	LEQ	shift 49
+	NEQ	shift 48
+	PLUS	shift 47
+	MINUS	shift 46
+	MULT	shift 45
+	DIV	shift 44
+	MOD	shift 43
+
+
+	.	reduce by rule 27
+
+
+state 75:
+
+	command : WHILE Expression DO LBRACE . CommandSeq RBRACE ENDWH 
+
+	Read	shift 19
+	Write	shift 18
+	IF	shift 17
+	WHILE	shift 16
+	IDENTIFIER	shift 3
+
+	CommandSeq	goto 78
+	command	goto 14
+	Variable	goto 13
+
+	.	reduce by rule 10
+
+
+state 76:
+
+	Expression : LPAREN Expression RPAREN .  (reduce by rule 28)
+
+
+
+	.	reduce by rule 28
+
+
+state 77:
+
+	command : IF Expression THEN LBRACE . CommandSeq RBRACE ELSE LBRACE CommandSeq RBRACE ENDIF 
+
+	Read	shift 19
+	Write	shift 18
+	IF	shift 17
+	WHILE	shift 16
+	IDENTIFIER	shift 3
+
+	CommandSeq	goto 79
+	command	goto 14
+	Variable	goto 13
+
+	.	reduce by rule 10
+
+
+state 78:
+
+	command : WHILE Expression DO LBRACE CommandSeq . RBRACE ENDWH 
+
+	RBRACE	shift 80
+
+
+	.	error
+
+
+state 79:
+
+	command : IF Expression THEN LBRACE CommandSeq . RBRACE ELSE LBRACE CommandSeq RBRACE ENDIF 
+
+	RBRACE	shift 81
+
+
+	.	error
+
+
+state 80:
+
+	command : WHILE Expression DO LBRACE CommandSeq RBRACE . ENDWH 
+
+	ENDWH	shift 82
+
+
+	.	error
+
+
+state 81:
+
+	command : IF Expression THEN LBRACE CommandSeq RBRACE . ELSE LBRACE CommandSeq RBRACE ENDIF 
+
+	ELSE	shift 83
+
+
+	.	error
+
+
+state 82:
+
+	command : WHILE Expression DO LBRACE CommandSeq RBRACE ENDWH .  (reduce by rule 15)
+
+
+
+	.	reduce by rule 15
+
+
+state 83:
+
+	command : IF Expression THEN LBRACE CommandSeq RBRACE ELSE . LBRACE CommandSeq RBRACE ENDIF 
+
+	LBRACE	shift 84
+
+
+	.	error
+
+
+state 84:
+
+	command : IF Expression THEN LBRACE CommandSeq RBRACE ELSE LBRACE . CommandSeq RBRACE ENDIF 
+
+	Read	shift 19
+	Write	shift 18
+	IF	shift 17
+	WHILE	shift 16
+	IDENTIFIER	shift 3
+
+	CommandSeq	goto 85
+	command	goto 14
+	Variable	goto 13
+
+	.	reduce by rule 10
+
+
+state 85:
+
+	command : IF Expression THEN LBRACE CommandSeq RBRACE ELSE LBRACE CommandSeq . RBRACE ENDIF 
+
+	RBRACE	shift 86
+
+
+	.	error
+
+
+state 86:
+
+	command : IF Expression THEN LBRACE CommandSeq RBRACE ELSE LBRACE CommandSeq RBRACE . ENDIF 
+
+	ENDIF	shift 87
+
+
+	.	error
+
+
+state 87:
+
+	command : IF Expression THEN LBRACE CommandSeq RBRACE ELSE LBRACE CommandSeq RBRACE ENDIF .  (reduce by rule 14)
+
+
+
+	.	reduce by rule 14
+
+
+state 88:
+
+
+	EOF	accept
+
+
+	.	error
+
+162 of 408 action table entries left after compaction
+88 goto table entries
