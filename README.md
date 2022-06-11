@@ -1,5 +1,4 @@
-# COL226 Assignment-4
-
+# The VMC machine for the ASTs of WHILE Language (A Toy Language)
 
 ## Objective
 
@@ -159,6 +158,10 @@ For learning ML-Lex and ML-YACC, I used the following resources:
 To learn about referencing and deferencing in SML, I followed http://rigaux.org/language-study/syntax-across-languages-per-language/SML.html.
 
 I used https://www.smlnj.org/doc/smlnj-lib/Util/str-HashTable.html to learn about HashTables in SML, and used them to build the Symbol Table.
+
+## For IITD Students
+
+This compiler was made as a part of an assignment for COL226, II Semester, 2021-22 under Prof S. Arun Kumar. Copy at your own risk :)
 
 ## Authors
 
