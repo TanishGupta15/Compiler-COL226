@@ -56,11 +56,6 @@ Firsly, we enter the REPL environment of SML by typing sml. Then we run the comp
 To run the evaluate function for an AST, use
 
     - Vmc.evaluate(filename);
-    
-    
-    
-
-
 
 ## Context-free Grammar
 
@@ -136,65 +131,6 @@ The datatype AST can either be:
   3. A node which has value of type node_data and has 3 children (Special node for If then else block). This node is called node3.
   4. A node whose 2nd element needs to be a string. This node is used for Identifier, and is called idnode.
   5. A node whose 2nd element needs to be an integer. This node is used for Numerals, and is called intnode.
-
-## Syntax directed translation
-
-
-program : PROGRAM Variable DEFINE BLOCK (main(node(PROG, Variable, BLOCK), check_type(node(PROG, Variable, BLOCK))))
-
-
-BLOCK : DeclarationSeq LBRACE CommandSeq RBRACE (node(BLK, DeclarationSeq, CommandSeq))
-
-
-DeclarationSeq : (*no declarations*) (node(DES, empty, empty)) |  Declaration DeclarationSeq (node(DES, Declaration, DeclarationSeq))
-
-Declaration : VAR VariableList ASSIGNB dt TERMINATOR (insert_dec(node(DE, VariableList, dt)))
-
-dt : INT (node(INT, empty, empty))
-    | BOOL (node(BOOL, empty,empty))
-    
-VariableList : Variable COMMA VariableList (node(VL, Variable, VariableList))
-                        | Variable (node(VL, Variable, empty)) 
-                        
-
-CommandSeq : command TERMINATOR CommandSeq (node(SEQ, command, CommandSeq))
-                            | (*no more commands*) (node(SEQ, empty, empty))
-                            
-command : Variable ASSIGNA Expression  (node(SET, Variable, Expression))
-                    | Read Variable (node(READ, Variable, empty))
-                    | Write Expression (node(WRITE, Expression, empty))
-                    | IF Expression THEN CommandSeq ELSE CommandSeq ENDIF (node3(ITE, Expression, CommandSeq1, CommandSeq2))
-                    | WHILE Expression DO CommandSeq ENDWH (node(WH, Expression, CommandSeq))
-                    
-
-Expression : 
-            TRUE (node(TT, empty, empty))
-            | FALSE (node(FF, empty, empty))
-            | Number (node(NUM, Number, empty))
-            | Variable (node(Var, Variable, empty)) 
-            | Expression GT Expression %prec GT (node(GT, Expression1, Expression2))
-            | Expression LT Expression %prec LT (node(LT, Expression1, Expression2))
-            | Expression LEQ Expression %prec LEQ (node(LEQ, Expression1, Expression2))
-            | Expression EQ Expression %prec EQ (node(EQ, Expression1, Expression2))
-            | Expression GEQ Expression %prec GEQ (node(GEQ, Expression1, Expression2))
-            | Expression NEQ Expression %prec NEQ (node(NEQ, Expression1, Expression2))
-            | Expression AND Expression %prec NEQ (node(AND, Expression1, Expression2))
-            | Expression OR Expression %prec NEQ (node(OR, Expression1, Expression2))
-            | LPAREN Expression RPAREN (Expression)
-            | NOT Expression %prec NOT (node(NOT, Expression, empty))
-            | Negation Expression %prec Negation (node(NEGATION, Expression, empty))
-            | Expression PLUS Expression  %prec PLUS (node(PLUS, Expression1, Expression2))
-            | Expression MINUS Expression  %prec MINUS (node(MINUS, Expression1, Expression2))
-            | Expression MULT Expression  %prec MULT (node(TIMES, Expression1, Expression2))
-            | Expression DIV Expression  %prec DIV (node(DIV, Expression1, Expression2))
-            | Expression MOD Expression  %prec MOD (node(MOD, Expression1, Expression2))
-            
-
-Variable : IDENTIFIER (idnode(ID, IDENTIFIER, empty))
-
-
-Number: NUMERAL (intnode(NUM, NUMERAL, empty))
-    
 
 ## Other Design Decisions
 
